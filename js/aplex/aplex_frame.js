@@ -16,37 +16,19 @@ function deal_with_IoT_Demo_job (frame_type, demo_name, path_name) {
     demo_js   = 'src/' + frame_type + '/' + path_name + '/demo.js';
     demo_html = 'src/' + frame_type + '/' + path_name + '/demo.html';
 
-    template_css  = 'templates/' + frame_type + '/svg_frame.css';
-    template_html = 'templates/' + frame_type + '/svg_frame.html';
+    template_css  = 'templates/' + frame_type + '/' + frame_type + '.css';
+    template_html = 'templates/' + frame_type + '/' + frame_type + '.html';
 
     dynamic_get_CSS(demo_css);
     dynamic_get_CSS(template_css);
 
     $.get(template_html, function(src) {
         var template = _.template(src);
-        $('#show-content').html(template());
-
-        code_content_container = $(".code_content_container");
-        for( i = 0; i < code_content_container.length; i++ ) 
-            code_content_container[i].style.maxHeight = window.screen.availHeight * 4 / 9 + "px";
-
-        code_vertical_scrollbar = $("pre.code_vertical_scrollbar");
-        for( i = 0; i < code_vertical_scrollbar.length; i++ ) 
-            code_vertical_scrollbar[i].style.maxHeight = window.screen.availHeight * 1 / 3 + "px";
-
-        $.get(demo_css, function(result) {
-            // show source code, replace '<' and '>'
-            result = replaceAll(replaceAll(result, "<", "&lt;"), ">", "&gt;");
-            $('#show-content_code_css').html(result);
-        }); 
+        $('#show-content').html(template({"title" : demo_name}));
 
         $.get(demo_html, function(result) {
             // show html
             $('#show-content_render').html(result);
-
-            // show source code, replace '<' and '>'
-            result = replaceAll(replaceAll(result, "<", "&lt;"), ">", "&gt;");
-            $('#show-content_code_html').html(result);
 
             // finish html and get javascript to execute
             dynamic_get_script(demo_name, demo_js, {"type" : frame_type});
@@ -253,24 +235,10 @@ jQuery.loadScript = function (url, callback) {
 function dynamic_get_script(demo_name, demo_js, json_data) {
 
     if (typeof someObject == 'undefined') $.loadScript(demo_js, function(result){
-        // check for show js code
-        show_code_js = $('#show-content_code_js');
-        if (show_code_js) {
-            show_code_js.html(result);
-
-            // show source code, replace '<' and '>'
-            result = replaceAll(replaceAll(result, "<", "&lt;"), ">", "&gt;");
-            $('#show-content_code_js').html(result);
-
-            // high light source code
-            $('pre code').each(function(i, block) {
-                hljs.highlightBlock(block);
-                hljs.lineNumbersBlock(block);
-            });
-        }
-
         //Stuff to do after someScript has loaded
-        call_string_function(demo_name, json_data);
+        console.log(demo_name);
+        console.log(json_data);
+        call_string_function('AplexOS_IoT_Demo_' + demo_name, json_data);
     });
 }
 

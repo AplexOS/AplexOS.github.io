@@ -24,11 +24,7 @@ var configs = {
         "parts" : ["IoT_Demo", "About"],
         "IoT_Demo" : {
             "pages" : {
-                /**
-                 * 对于type是html类型且需要渲染的的page来说，文件夹的名称是$(index)_$(key)，例如：
-                 * 001_javascript_control_svg_element = $(index)(0001)_$(key)(javascript_control_svg_element)
-                 */
-                "javascript_control_svg_element" : {
+                "Temperature" : {
                     "index" : "001",
                     "type" : "html"
                 }
